@@ -63,7 +63,7 @@ public class BookDaoImpl extends BaseDao implements BookDao{
 
 
 	public int updateBook(String sql, Object[] param) {
-		int count=super.executeSQL(sql,param);
+		int count=executeSQL(sql,param);
 		return count;
 	}
 }

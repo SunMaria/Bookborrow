@@ -18,8 +18,9 @@ public class AdministratorDaoImpl extends BaseDao implements AdministratorDao{
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				Administrator administrator=new Administrator();
-				administrator.setName(rs.getString(1));
-				administrator.setPassword(rs.getString(2));
+				administrator.setId(rs.getInt(1));
+				administrator.setName(rs.getString(2));
+				administrator.setPassword(rs.getString(3));
 				administratorList.add(administrator);
 			}
 
@@ -47,9 +48,9 @@ public class AdministratorDaoImpl extends BaseDao implements AdministratorDao{
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				administrator=new Administrator();
-				//administrator.setId(rs.getInt(1));
-				administrator.setName(rs.getString(1));
-				administrator.setPassword(rs.getString(2));
+				administrator.setId(rs.getInt(1));
+				administrator.setName(rs.getString(2));
+				administrator.setPassword(rs.getString(3));
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -63,7 +64,7 @@ public class AdministratorDaoImpl extends BaseDao implements AdministratorDao{
 
 	@Override
 	public int updateAdministrator(String sql, Object[] param) {
-		int count=super.executeSQL(sql,param);
+		int count=executeSQL(sql,param);
 		return count;
 	}
 }
