@@ -1,7 +1,5 @@
 package bookborrow.entity;
 
-import bookborrow.service.impl.*;
-
 public class User {
 	String name;
 	String password;

@@ -5,8 +5,6 @@ import bookborrow.dao.*;
 import bookborrow.dao.impl.*;
 
 public class UserFactoryImpl implements UserFactory {
-	
-	public UserFactoryImpl() {}
 
 	@Override
 	public void createUser() {

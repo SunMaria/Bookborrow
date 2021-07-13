@@ -18,9 +18,9 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				User user=new User();
-				user.setName(rs.getString(1));
-				user.setPassword(rs.getString(2));
-				user.setLevel(rs.getInt(3));
+				user.setName(rs.getString(2));
+				user.setPassword(rs.getString(3));
+				user.setLevel(rs.getInt(4));
 				userList.add(user);
 			}
 
@@ -48,9 +48,9 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				user=new User();
-				user.setName(rs.getString(1));
-				user.setPassword(rs.getString(2));
-				user.setLevel(rs.getInt(3));
+				user.setName(rs.getString(2));
+				user.setPassword(rs.getString(3));
+				user.setLevel(rs.getInt(4));
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -64,7 +64,7 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 
 	@Override
 	public int updateUser(String sql, Object[] param) {
-		int count=super.executeSQL(sql,param);
+		int count=executeSQL(sql,param);
 		return count;
 	}
 
