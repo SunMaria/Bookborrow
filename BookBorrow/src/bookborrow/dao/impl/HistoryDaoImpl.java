@@ -19,9 +19,9 @@ public class HistoryDaoImpl extends BaseDao implements HistoryDao{
 				History history=new History();
 				history.setUname(rs.getString(1));
 				history.setBname(rs.getString(2));
-				history.setLendtime(rs.getTime(3).toString());
-				history.setDdl(rs.getTime(4).toString());
-				history.setReturntime(rs.getTime(5).toString());
+				history.setLendtime(rs.getDate(3).toString());
+				history.setDdl(rs.getDate(4).toString());
+				history.setReturntime(rs.getDate(5).toString());
 				historyList.add(history);
 			}
 
@@ -51,9 +51,9 @@ public class HistoryDaoImpl extends BaseDao implements HistoryDao{
 				history=new History();
 				history.setUname(rs.getString(1));
 				history.setBname(rs.getString(2));
-				history.setLendtime(rs.getTime(3).toString());
-				history.setDdl(rs.getTime(4).toString());
-				history.setReturntime(rs.getTime(5).toString());
+				history.setLendtime(rs.getDate(3).toString());
+				history.setDdl(rs.getDate(4).toString());
+				history.setReturntime(rs.getDate(5).toString());
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -67,7 +67,7 @@ public class HistoryDaoImpl extends BaseDao implements HistoryDao{
 
 	@Override
 	public int updateHistory(String sql, Object[] param) {
-		int count=executeSQL(sql,param);
+		int count=super.executeSQL(sql,param);
 		return count;
 	}
 
@@ -88,9 +88,9 @@ public class HistoryDaoImpl extends BaseDao implements HistoryDao{
 				History history=new History();
 				history.setUname(rs.getString(1));
 				history.setBname(rs.getString(2));
-				history.setLendtime(rs.getTime(3).toString());
-				history.setDdl(rs.getTime(4).toString());
-				history.setReturntime(rs.getTime(5).toString());
+				history.setLendtime(rs.getDate(3).toString());
+				history.setDdl(rs.getDate(4).toString());
+				history.setReturntime(rs.getDate(5).toString());
 				historyList.add(history);
 			}
 
