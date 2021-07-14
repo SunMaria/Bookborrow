@@ -66,4 +66,14 @@ public class BookDaoImpl extends BaseDao implements BookDao{
 		int count=executeSQL(sql,param);
 		return count;
 	}
+	
+	public int addBook(String sql, Object[] param) {
+		int count=executeSQL(sql,param);
+		return count;
+	}
+
+	public int deleteBook(String sql, Object[] param) {
+		int count=executeSQL(sql,param);
+		return count;
+	}
 }
