@@ -10,6 +10,7 @@ import bookborrow.dao.*;
 import bookborrow.dao.impl.*;
 import bookborrow.entity.*;
 
+
 public class AdministratorServiceImpl extends BaseDao implements AdministratorService {
 	private Connection conn=null;
 	private PreparedStatement pstmt=null;
@@ -33,8 +34,11 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 		return administrator;
 	}
 	public List<User> list_user() {
-		return null;
-	}
+        List<User> u1=new ArrayList<User>();
+        UserDao userDao=new UserDaoImpl();
+        u1= userDao.getAllUser();
+        return u1;
+    }
 	public List<User> select_user(String name) {
 		List<User> userList = new ArrayList<User>();
 		try {
@@ -72,6 +76,18 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 	}
 	public void delete_book() {
 		
+	}
+	@Override
+	 public List<Book> list() {
+        BookDao bookdao=new BookDaoImpl();
+        List<Book> booklist = new ArrayList<Book>();
+        booklist=bookdao.getAllBook();
+        return booklist;
+    }
+	@Override
+	public Book select(String bookname) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
