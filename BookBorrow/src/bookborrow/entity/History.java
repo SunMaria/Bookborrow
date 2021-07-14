@@ -2,11 +2,17 @@ package bookborrow.entity;
 import java.util.*;
 public class History {
 	String uname;
+	int bid;
 	String bname;
 	String lendtime;
 	String ddl;//应当归还时间
     String returntime;//实际归还时间
-	
+	public String getBid(){
+		return bid;
+	}
+	public void setBid(int bid){
+		this.bid=bid;
+	}
 	public String getUname() {
 		return uname;
 	}
