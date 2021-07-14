@@ -1,5 +1,7 @@
 package bookborrow.service.impl;
 
+import bookborrow.entity.User;
+
 public class Main {
 
 	public static void main(String[] args) {
