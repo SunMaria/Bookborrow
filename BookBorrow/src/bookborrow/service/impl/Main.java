@@ -96,37 +96,33 @@ public class Main {
 	}
 
 	//创建鲜花商店
-	private static FlowerStore createFlowerStore(FlowerStore store) {
-		FlowerStoreFactory storeFactory = new FlowerStoreFactoryImpl();
-		storeFactory.createFlowerStore();
-		IsStoreLogOut(store);
-		
-		return store;//返回的是鲜花商店创建者
+	private static User createFlowerStore(User user) {
+		UserFactory userFactory = new UserFactoryImpl();
+		userFactory.createUser();
+		IsUserLogOut(user);//是否继续操作
+		return user;//返回的是鲜花商店创建者
 	}
 
-	private static void IsStoreLogOut(FlowerStore store) {
+	private static void IsUserLogOut(User user) {
 		System.out.println("您是否继续其它操作若是请输入y,退出请按任意键");
 		Scanner input = new Scanner(System.in);
 		String code=input.next();
-		if(code.equals("y"))
-		{
-			
-			StoreChoose( store);
+		if(code.equals("y")){
+			UserChoose( user);
 		}
-		else
-		{
+		else{
 			System.out.println("您已成功退出系统");
 		}
 	}
 
 	private static void UserChoose(User user) {
-		System.out.println("1：购买鲜花");
-		System.out.println("2：卖出鲜花");
-		System.out.println("3：培育鲜花");
-		System.out.println("4：查询待售鲜花");
-		System.out.println("5：查看商店结余");
-		System.out.println("6：查看商店账目");
-		System.out.println("7：开鲜花商店");
+		System.out.println("1：查询所有书籍");
+		System.out.println("2：查询书籍");
+		System.out.println("3：借书");
+		System.out.println("4：还书");
+		System.out.println("5：查询历史借阅记录");
+		//System.out.println("6：查看商店账目");
+		//System.out.println("7：开鲜花商店");
 		System.out.println("请根据需要执行的操作，选择序号输入，退出请输入0");
 		Scanner input = new Scanner(System.in);
 		boolean type = true;
@@ -138,31 +134,23 @@ public class Main {
 				type = false;
 				break;
 			case 1:
-				Main.storeBuy(store);
+				Main.storeBuy(user);
 				type = false;
 				break;
 			case 2:
-				Main.storeSell(store);
+				Main.storeSell(user);
 				type = false;
 				break;
 			case 3:
-				Main.storeBread(store);//传入登录的商店
+				Main.storeBread(user);//传入登录的商店
 				type = false;
 				break;
 			case 4:
-				Main.queryFlowerStock(store.getId());
+				Main.queryFlowerStock(user.getId());
 				type = false;
 				break;
 			case 5:
-				Main.queryStoreBalance(store);
-				type = false;
-				break;
-			case 6:
-				Main.getAccount(store.getId());
-				type = false;
-				break;
-			case 7:
-				Main.createFlowerStore(store);
+				Main.queryStoreBalance(user);
 				type = false;
 				break;
 			default:
@@ -170,7 +158,7 @@ public class Main {
 				type = true;
 				break;
 			}
-			}
+		}
 	}
 	
 
