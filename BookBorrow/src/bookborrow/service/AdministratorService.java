@@ -7,7 +7,7 @@ import java.util.List;
 public interface AdministratorService extends ListBookable,SelectBookable{
 	public Administrator login();
 	public List<User> list_user();
-	public List<User> select_user();
+	public List<User> select_user(String name);
 	public void add_book();
 	public void add_user();
 	public void list_history();
