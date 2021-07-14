@@ -10,7 +10,6 @@ public class UserServiceImpl implements UserService{
 	
 	@Override
 	public void lend(User user) {
-		// TODO Auto-generated method stub
 		Scanner input = new Scanner(System.in);
 		System.out.println("请输入要借阅的书名:");
 		String bname=input.nextLine().trim();
@@ -19,13 +18,13 @@ public class UserServiceImpl implements UserService{
 		String sql1="select * from book where name=?";
 		String[] param1= {bname};
 		book=bookdao1.getBook(sql1, param1);//查询book
-		if(book.getState().equals("True")){
+		if(book.getState().equals("Lent")){
 			System.out.println(bname+" 已经被借阅");
 		}
 		else {
 			//更新book状态
 			String sql2="update book set state=? where name=?";
-		    String[] param2= {"True",bname};
+		    String[] param2= {"Lent",bname};
 		    BookDao bookdao2=new BookDaoImpl();
 		    int count1=bookdao2.updateBook(sql2, param2);
 			//插入history
@@ -48,7 +47,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public void returnbook(User user) {
-		// TODO Auto-generated method stub
 		Scanner input = new Scanner(System.in);
 		System.out.println("请输入要归还的书名:");
 		String bname=input.nextLine().trim();
@@ -57,7 +55,7 @@ public class UserServiceImpl implements UserService{
 		String sql1="select * from book where name=?";
 		String[] param1= {bname};
 		book=bookdao1.getBook(sql1, param1);//查询book
-		if(book.getState().equals("False")){
+		if(book.getState().equals("Free")){
 			System.out.println("已经归还");
 		}
 		else if(book.getName().equals(null)) {
@@ -66,7 +64,7 @@ public class UserServiceImpl implements UserService{
 		else {
 			//更新book状态
 			String sql2="update book set state=? where name=?";
-		    Object[] param2= {"False",bname};
+		    Object[] param2= {"Free",bname};
 		    BookDao bookdao2=new BookDaoImpl();
 		    int count1=bookdao2.updateBook(sql2, param2);
 		    
@@ -113,7 +111,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<Book> list() {
-		// TODO Auto-generated method stub
 		BookDao bookdao=new BookDaoImpl();
 		List<Book> booklist = new ArrayList<Book>();
 		booklist=bookdao.getAllBook();
@@ -122,7 +119,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public Book select(String bookname) {
-		// TODO Auto-generated method stub
 		BookDao bookdao=new BookDaoImpl();
 		Book book=new Book();
 		String sql="select * from book where name=?";
@@ -133,7 +129,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public List<History> mybook(String uname) {
-		// TODO Auto-generated method stub
 		List<History> hl=new ArrayList<History>();
 		String sql="select * from history where uname=?";
 		String[] param= {uname};
@@ -144,7 +139,6 @@ public class UserServiceImpl implements UserService{
 
 	@Override
 	public User login() {
-		// TODO Auto-generated method stub
 		Scanner input = new Scanner(System.in);
 		System.out.println("请登录，先输入用户名:");
 		String name=input.nextLine().trim();
