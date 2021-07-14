@@ -17,14 +17,14 @@ public class HistoryDaoImpl extends BaseDao implements HistoryDao{
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				History history=new History();
-				history.setUname(rs.getString(1));
-				history.setBname(rs.getString(2));
-				history.setLendtime(rs.getDate(3).toString());
-				history.setDdl(rs.getDate(4).toString());
-				history.setReturntime(rs.getDate(5).toString());
+				history.setBid(rs.getInt(1));
+				history.setUname(rs.getString(2));
+				history.setBname(rs.getString(3));
+				history.setLendtime(rs.getDate(4).toString());
+				history.setDdl(rs.getDate(5).toString());
+				history.setReturntime(rs.getDate(6).toString());
 				historyList.add(history);
 			}
-
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}catch(ClassNotFoundException e) {
@@ -49,11 +49,12 @@ public class HistoryDaoImpl extends BaseDao implements HistoryDao{
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				history=new History();
-				history.setUname(rs.getString(1));
-				history.setBname(rs.getString(2));
-				history.setLendtime(rs.getDate(3).toString());
-				history.setDdl(rs.getDate(4).toString());
-				history.setReturntime(rs.getDate(5).toString());
+				history.setBid(rs.getInt(1));
+				history.setUname(rs.getString(2));
+				history.setBname(rs.getString(3));
+				history.setLendtime(rs.getDate(4).toString());
+				history.setDdl(rs.getDate(5).toString());
+				history.setReturntime(rs.getDate(6).toString());
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -86,11 +87,12 @@ public class HistoryDaoImpl extends BaseDao implements HistoryDao{
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				History history=new History();
-				history.setUname(rs.getString(1));
-				history.setBname(rs.getString(2));
-				history.setLendtime(rs.getDate(3).toString());
-				history.setDdl(rs.getDate(4).toString());
-				history.setReturntime(rs.getDate(5).toString());
+				history.setBid(rs.getInt(1));
+				history.setUname(rs.getString(2));
+				history.setBname(rs.getString(3));
+				history.setLendtime(rs.getDate(4).toString());
+				history.setDdl(rs.getDate(5).toString());
+				history.setReturntime(rs.getDate(6).toString());
 				historyList.add(history);
 			}
 
