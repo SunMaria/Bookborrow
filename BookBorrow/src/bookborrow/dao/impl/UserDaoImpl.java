@@ -67,5 +67,9 @@ public class UserDaoImpl extends BaseDao implements UserDao {
 		int count=executeSQL(sql,param);
 		return count;
 	}
-
+	public int addUser(String sql,Object[]param)
+	{
+		int count=executeSQL(sql,param);
+		return count;
+	}
 }
