@@ -19,16 +19,16 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 
 	public Administrator login() {
 		Scanner input = new Scanner(System.in);
-		System.out.println("ÇëµÇÂ¼£¬ÇëÊäÈë¹ÜÀíÔ±Ãû³Æ:");
+		System.out.println("è¯·ç™»å½•ï¼Œè¯·è¾“å…¥ç®¡ç†å‘˜åç§°:");
 		String name=input.nextLine().trim();
-		System.out.println("ÇëÊäÈëÃÜÂë:");
+		System.out.println("è¯·è¾“å…¥å¯†ç :");
 		String password=input.nextLine().trim();
 		AdministratorDao administratordao=new AdministratorDaoImpl();
 		String sql="select * from administrator where name=? and password=?";
 		String[] param= {name,password};
 		Administrator administrator=administratordao.getAdministrator(sql, param);
 		if(null != administrator) {
-			System.out.println("µÇÂ¼³É¹¦");
+			System.out.println("ç™»å½•æˆåŠŸ");
 		}
 		return administrator;
 	}
@@ -42,10 +42,11 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 	public List<User> select_user(String name) {
 		List<User> userList = new ArrayList<User>();
 		try {
-			String preparedSql="select * from user where uname = ?";
+			String preparedSql="select * from user where uname like ?";
 			String [] param = {name};
 			conn=getConn();
 			pstmt=conn.prepareStatement(preparedSql);
+			pstmt.setString(1, "%"+name+"%");
 			rs=pstmt.executeQuery();
 			while(rs.next()) {
 				User user=new User();
@@ -54,7 +55,6 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 				user.setLevel(rs.getInt(4));
 				userList.add(user);
 			}
-
 		}catch(SQLException e) {
 			e.printStackTrace();
 		}catch(ClassNotFoundException e) {
@@ -66,10 +66,11 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 		return userList;
 	}
 
+
 	public boolean add_book() {
 		String bookName;
 		Scanner input = new Scanner(System.in);
-		System.out.println("ÇëÊäÈëÌí¼ÓµÄÊéÃû£º");
+		System.out.println("è¯·è¾“å…¥æ·»åŠ çš„ä¹¦åï¼š");
 		bookName=input.next();
 		Book book=new Book(num,bookName,"Free");
 		String sql="insert into book(id,name,state) values(?,?,?)";
@@ -77,7 +78,7 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 		BookDao bookDao=new BookDaoImpl();
 		int count=bookDao.addBook(sql,param);
 		if(count>0) {
-			System.out.println("³É¹¦Ìí¼Ó£¡");
+			System.out.println("æˆåŠŸæ·»åŠ ï¼");
 			return true;
 		}
 		else
@@ -89,10 +90,10 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 		String password;
 		User user=new User();
 		Scanner input = new Scanner(System.in);
-		System.out.println("ÇëÊäÈëÌí¼ÓµÄÓÃ»§Ãû£º");
+		System.out.println("è¯·è¾“å…¥æ·»åŠ çš„ç”¨æˆ·åï¼š");
 		userName=input.next();
 		user.setName(userName);
-		System.out.println("ÇëÊäÈëÌí¼ÓµÄÓÃ»§ÃÜÂë£º");
+		System.out.println("è¯·è¾“å…¥æ·»åŠ çš„ç”¨æˆ·å¯†ç ï¼š");
 		password=input.next();
 		user.setPassword(password);
 		user.setLevel(10);
@@ -101,11 +102,11 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 		UserDao userDao=new UserDaoImpl();
 		int count=userDao.addUser(sql,param);
 		if(count>0) {
-			System.out.println("³É¹¦Ìí¼Ó£¡");
+			System.out.println("æˆåŠŸæ·»åŠ ï¼");
 			return true;
 		}
 		else {
-			System.out.println("Ìí¼ÓÊ§°Ü£¡");
+			System.out.println("æ·»åŠ å¤±è´¥ï¼");
 			return false;
 		}
 	}
@@ -118,18 +119,18 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 	public boolean delete_book() {
 		int bid;
 		Scanner input = new Scanner(System.in);
-		System.out.println("ÇëÊäÈëÏëÉ¾³ıµÄÊé¼®id£º");
+		System.out.println("è¯·è¾“å…¥æƒ³åˆ é™¤çš„ä¹¦ç±idï¼š");
 		bid=input.nextInt();
 		String sql="delete form book where bid=?";
 		Object[] param={bid};
 		BookDao bookDao=new BookDaoImpl();
 		int count=bookDao.deleteBook(sql,param);
 		if(count>0) {
-			System.out.println("³É¹¦É¾³ı£¡");
+			System.out.println("æˆåŠŸåˆ é™¤ï¼");
 			return true;
 		}
 		else {
-			System.out.println("Î´²éÕÒµ½´ËÊé£¡");
+			System.out.println("æœªæŸ¥æ‰¾åˆ°æ­¤ä¹¦ï¼");
 			return false;
 		}
 	}
@@ -146,7 +147,7 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 		Book book=new Book();
 		String sql="select * from book where name=?";
 		String[] param= {bookname};
-		book=bookdao.getBook(sql, param);//²éÑ¯book
+		book=bookdao.getBook(sql, param);//æŸ¥è¯¢book
 		return book;
 	}
 
