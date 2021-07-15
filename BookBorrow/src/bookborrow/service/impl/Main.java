@@ -11,26 +11,10 @@ public class Main {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		/*UserServiceImpl u=new UserServiceImpl();
-		User u1=new User();
-		u1=u.login();
-		System.out.println(u1.getName());
-		System.out.println(u1.getLevel());
-		//u.lend(u1);
-		u.returnbook(u1);
-		System.out.println(u1.getLevel());
-		
-		u.mybook("aa");
-		u.returnbook(u1);
-		List<Book> booklist = new ArrayList<Book>();
-		booklist=u.list();
-		for(int i=0;i<booklist.size();i++) {
-			System.out.println(booklist.get(i).getName());
-		}*/
-		Main.start();
+		Main.startBookBorroew();
 	}
 	
-	private static void start() {
+	private static void startBookBorroew() {
 		System.out.println("----------------------社区图书借阅管理系统启动-----------------");
 		System.out.println("图书信息");
 		System.out.println("****************************************************");
@@ -85,7 +69,6 @@ public class Main {
 		}
 	}
 
-	//用户登录
 	private static User userLogin() {
 		Scanner input = new Scanner(System.in);
 		UserService userservice = new UserServiceImpl();
@@ -95,12 +78,11 @@ public class Main {
 		return user;	
 	}
 
-	//创建用户
-	private static User createFlowerStore(User user) {
+	private static User createUser(User user) {
 		UserFactory userFactory = new UserFactoryImpl();
 		userFactory.createUser();
 		IsUserLogOut(user);//是否继续操作
-		return user;//返回
+		return user;
 	}
 
 	private static void IsUserLogOut(User user) {
@@ -116,7 +98,6 @@ public class Main {
 	}
 
 	private static void UserChoose(User user) {
-		//System.out.println("1：查询所有书籍");
 		System.out.println("1：查询书籍");
 		System.out.println("2：借书");
 		System.out.println("3：还书");
@@ -175,9 +156,14 @@ public class Main {
 		System.out.println("图书ID\t" + "用户名\t"+"图书名称\t"+"借阅时间\t"+"归还截止时间\t"+"归还时间\t");
 		for (int i = 0; i < historyList.size(); i++) {
 			History history = historyList.get(i);
-			System.out.println(history.getBid()+"\t"+ history.getBname()+"\t"+history.getLendtime()+"\t"
-					+history.getDdl()+"\t"+history.getReturntime()+"\t");
-		   }
+			if(history.getReturntime().equals(null)) {
+				System.out.println(history.getBid()+"\t"+ history.getBname()+"\t"+history.getLendtime()+"\t"
+					+history.getDdl()+"\t");
+			}else {
+				System.out.println(history.getBid()+"\t"+ history.getBname()+"\t"+history.getLendtime()+"\t"
+						+history.getDdl()+"\t"+history.getReturntime()+"\t");
+			}
+		}
 		IsUserLogOut(user);
 	}
 	
