@@ -60,6 +60,37 @@ public class BookDaoImpl extends BaseDao implements BookDao{
 		}
 		return book;
 	}
+	
+	@Override
+	public List<Book> getSomeBook(String sql, Object[] param) {
+		// TODO Auto-generated method stub
+		List<Book> bookList = new ArrayList<Book>();
+		try {
+			conn=getConn();
+			pstmt=conn.prepareStatement(sql);
+			if(param != null) {
+				for(int i=0;i<param.length;i++) {
+					pstmt.setObject(i+1, param[i]);
+				}
+			}
+			rs=pstmt.executeQuery();
+			while(rs.next()) {
+				Book book=new Book();
+				book.setId(rs.getInt(1));
+				book.setName(rs.getString(2));
+				book.setState(rs.getString(3));
+				bookList.add(book);
+			}
+
+		}catch(SQLException e) {
+			e.printStackTrace();
+		}catch(ClassNotFoundException e) {
+			e.printStackTrace();
+		}finally {
+			this.closeAll(conn, pstmt, rs);
+		}
+		return bookList;
+	}
 
 
 	public int updateBook(String sql, Object[] param) {
