@@ -15,17 +15,16 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 	private Connection conn=null;
 	private PreparedStatement pstmt=null;
 	private ResultSet rs=null;
-	
-	
+	public static int num=1;
+
 	public Administrator login() {
-		// TODO Auto-generated method stub
 		Scanner input = new Scanner(System.in);
 		System.out.println("请登录，请输入管理员名称:");
 		String name=input.nextLine().trim();
 		System.out.println("请输入密码:");
 		String password=input.nextLine().trim();
 		AdministratorDao administratordao=new AdministratorDaoImpl();
-		String sql="select * from administrsator where name=? and password=?";
+		String sql="select * from administrator where name=? and password=?";
 		String[] param= {name,password};
 		Administrator administrator=administratordao.getAdministrator(sql, param);
 		if(null != administrator) {
@@ -39,6 +38,7 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
         u1= userDao.getAllUser();
         return u1;
     }
+
 	public List<User> select_user(String name) {
 		List<User> userList = new ArrayList<User>();
 		try {
@@ -63,19 +63,75 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 			this.closeAll(conn, pstmt, rs);
 		}
 
-		return null;		
+		return userList;
 	}
-	public void add_book() {
-		
+
+	public boolean add_book() {
+		String bookName;
+		Scanner input = new Scanner(System.in);
+		System.out.println("请输入添加的书名：");
+		bookName=input.next();
+		Book book=new Book(num,bookName,"Free");
+		String sql="insert into book(id,name,state) values(?,?,?)";
+		Object[] param={book.getId(),book.getName(),book.getState()};
+		BookDao bookDao=new BookDaoImpl();
+		int count=bookDao.addBook(sql,param);
+		if(count>0) {
+			System.out.println("成功添加！");
+			return true;
+		}
+		else
+			return false;
 	}
-	public void add_user() {
-		
+
+	public boolean add_user() {
+		String userName;
+		String password;
+		User user=new User();
+		Scanner input = new Scanner(System.in);
+		System.out.println("请输入添加的用户名：");
+		userName=input.next();
+		user.setName(userName);
+		System.out.println("请输入添加的用户密码：");
+		password=input.next();
+		user.setPassword(password);
+		user.setLevel(10);
+		String sql="insert into user(uname,password,level) values(?,?,?)";
+		Object[] param={user.getName(),user.getPassword(),user.getLevel()};
+		UserDao userDao=new UserDaoImpl();
+		int count=userDao.addUser(sql,param);
+		if(count>0) {
+			System.out.println("成功添加！");
+			return true;
+		}
+		else {
+			System.out.println("添加失败！");
+			return false;
+		}
 	}
-	public void list_history() {
-		
+	public List<History> list_history() {
+		List<History> historyList = new ArrayList<History>();
+		HistoryDao historyDao=new HistoryDaoImpl();
+		historyList=historyDao.getAllHistory();
+		return historyList;
 	}
-	public void delete_book() {
-		
+	public boolean delete_book() {
+		int bid;
+		Scanner input = new Scanner(System.in);
+		System.out.println("请输入想删除的书籍id：");
+		bid=input.nextInt();
+		String sql="delete form book where bid=?";
+		Object[] param={bid};
+		BookDao bookDao=new BookDaoImpl();
+		int count=bookDao.deleteBook(sql,param);
+		if(count>0) {
+			System.out.println("成功删除！");
+			return true;
+		}
+		else {
+			System.out.println("未查找到此书！");
+			return false;
+		}
 	}
 	@Override
 	 public List<Book> list() {
@@ -86,8 +142,13 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
     }
 	@Override
 	public Book select(String bookname) {
-		// TODO Auto-generated method stub
-		return null;
+		BookDao bookdao=new BookDaoImpl();
+		Book book=new Book();
+		String sql="select * from book where name=?";
+		String[] param= {bookname};
+		book=bookdao.getBook(sql, param);//查询book
+		return book;
 	}
+
 
 }
