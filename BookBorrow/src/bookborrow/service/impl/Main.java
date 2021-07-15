@@ -217,13 +217,14 @@ public class Main {
 		Administrator administrator=new Administrator();
 		AdministratorService administratorService=new AdministratorServiceImpl();
 		administrator=administratorService.login();
-		if(administrator.getName()!=null)
+		if(administrator.getName()!=null){
 			System.out.println("您已登录成功，可以进行如下操作");
 			AdministratorChoose(administrator);
 			return administrator;
+		}
 		else
 			return null;
-		}
+	}
 
 	//管理员菜单
 	private static void AdministratorChoose(Administrator administrator) {
