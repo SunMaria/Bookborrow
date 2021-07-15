@@ -1,6 +1,7 @@
 package bookborrow.service;
 
 import bookborrow.entity.Administrator;
+import bookborrow.entity.History;
 import bookborrow.entity.User;
 import java.util.List;
 
