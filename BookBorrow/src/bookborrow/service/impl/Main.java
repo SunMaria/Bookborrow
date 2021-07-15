@@ -244,27 +244,27 @@ public class Main {
 					type = false;
 					break;
 				case 1:
-					Main.listUser();
+					Main.listUser(administrator);
 					type = false;
 					break;
 				case 2:
-					Main.selectUser();
+					Main.selectUser(administrator);
 					type = false;
 					break;
 				case 3:
-					Main.addBook();
+					Main.addBook(administrator);
 					type = false;
 					break;
 				case 4:
-					Main.delBook();
+					Main.delBook(administrator);
 					type = false;
 					break;
 				case 5:
-					Main.listHistory();
+					Main.listHistory(administrator);
 					type = false;
 					break;
 				case 6:
-					Main.addUser();
+					Main.addUser(administrator);
 					type = false;
 					break;
 				default:
@@ -274,23 +274,76 @@ public class Main {
 			}
 		}
 	}
-	public static void listUser(){
-
+	public static void listUser(Administrator administrator){
+		List<User> userList;
+		AdministratorService administratorService=new AdministratorServiceImpl();
+		userList=administratorService.list_user();
+		System.out.println("用户名\t"+"用户密码\t"+"用户等级\t");
+		for (int i = 0; i < userList.size(); i++){
+			User user = userList.get(i);
+			System.out.println(user.getName()+"\t"+user.getPassword()+"\t"+user.getLevel()+"\t");
+		}
+		IsAdministratorLogOut(administrator);
 	}
-	public static void selectUser(){
 
+	public static void selectUser(Administrator administrator){
+		List<User> userList;
+		Scanner input=new Scanner(System.in);
+		AdministratorService administratorService=new AdministratorServiceImpl();
+		System.out.println("输入想查询的用户名");
+		String name=input.next();
+		userList=administratorService.select_user(name);
+		System.out.println("用户名\t"+"用户密码\t"+"用户等级\t");
+		for (int i = 0; i < userList.size(); i++){
+			User user = userList.get(i);
+			System.out.println(user.getName()+"\t"+user.getPassword()+"\t"+user.getLevel()+"\t");
+		}
+		IsAdministratorLogOut(administrator);
 	}
-	public static void addBook(){
 
+	public static void addBook(Administrator administrator){
+		AdministratorService administratorService=new AdministratorServiceImpl();
+		if (!administratorService.add_book()) {
+			System.out.println("插入失败");
+		}
+		IsAdministratorLogOut(administrator);
 	}
-	public static void delBook(){
 
+	public static void delBook(Administrator administrator){
+		AdministratorService administratorService=new AdministratorServiceImpl();
+		boolean flag=administratorService.delete_book();
+		IsAdministratorLogOut(administrator);
 	}
-	public static void listHistory(){
 
+	public static void listHistory(Administrator administrator){
+		AdministratorService administratorService=new AdministratorServiceImpl();
+		List<History> historyList=administratorService.list_history();
+		System.out.println("图书ID\t" + "用户名\t"+"图书名称\t"+"借阅时间\t"+"归还截止时间\t"+"归还时间\t");
+		for (int i = 0; i < historyList.size(); i++) {
+			History history = historyList.get(i);
+			System.out.println(history.getBid()+"\t"+ history.getBname()+"\t"+history.getLendtime()+"\t"
+					+history.getDdl()+"\t"+history.getReturntime()+"\t");
+		}
+		IsAdministratorLogOut(administrator);
 	}
-	public static void addUser(){
 
+	public static void addUser(Administrator administrator){
+		AdministratorService administratorService=new AdministratorServiceImpl();
+		boolean flag=administratorService.add_user();
+		IsAdministratorLogOut(administrator);
+	}
+
+	//管理员退出登陆
+	private static void IsAdministratorLogOut(Administrator administrator) {
+		System.out.println("您是否继续其它操作若是请输入y,退出请按任意键");
+		Scanner input = new Scanner(System.in);
+		String code=input.next();
+		if(code.equals("y")){
+			AdministratorChoose(administrator);
+		}
+		else{
+			System.out.println("您已成功退出系统");
+		}
 	}
 
 }
