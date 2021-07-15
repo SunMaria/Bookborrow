@@ -22,7 +22,11 @@ public class HistoryDaoImpl extends BaseDao implements HistoryDao{
 				history.setBname(rs.getString(3));
 				history.setLendtime(rs.getDate(4).toString());
 				history.setDdl(rs.getDate(5).toString());
-				history.setReturntime(rs.getDate(6).toString());
+				if(rs.getDate(6)==null){//判断null法1
+					history.setReturntime("null");
+				}else {
+					history.setReturntime(rs.getDate(6).toString());
+				}
 				historyList.add(history);
 			}
 		}catch(SQLException e) {
@@ -54,7 +58,12 @@ public class HistoryDaoImpl extends BaseDao implements HistoryDao{
 				history.setBname(rs.getString(3));
 				history.setLendtime(rs.getDate(4).toString());
 				history.setDdl(rs.getDate(5).toString());
-				history.setReturntime(rs.getDate(6).toString());
+				java.sql.Date date=rs.getDate(6);//判断null法2
+				if(rs.wasNull()) {
+					history.setReturntime("null");
+				}else {
+					history.setReturntime(rs.getDate(6).toString());
+				}
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -92,7 +101,11 @@ public class HistoryDaoImpl extends BaseDao implements HistoryDao{
 				history.setBname(rs.getString(3));
 				history.setLendtime(rs.getDate(4).toString());
 				history.setDdl(rs.getDate(5).toString());
-				history.setReturntime(rs.getDate(6).toString());
+				if(rs.getDate(6)==null){
+					history.setReturntime("null");
+				}else {
+					history.setReturntime(rs.getDate(6).toString());
+				}
 				historyList.add(history);
 			}
 
