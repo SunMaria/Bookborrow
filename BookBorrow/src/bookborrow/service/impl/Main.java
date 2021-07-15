@@ -116,13 +116,11 @@ public class Main {
 	}
 
 	private static void UserChoose(User user) {
-		System.out.println("1：查询所有书籍");
-		System.out.println("2：查询书籍");
-		System.out.println("3：借书");
-		System.out.println("4：还书");
-		System.out.println("5：查询历史借阅记录");
-		//System.out.println("6：查看商店账目");
-		//System.out.println("7：开鲜花商店");
+		//System.out.println("1：查询所有书籍");
+		System.out.println("1：查询书籍");
+		System.out.println("2：借书");
+		System.out.println("3：还书");
+		System.out.println("4：查询历史借阅记录");
 		System.out.println("请根据需要执行的操作，选择序号输入，退出请输入0");
 		Scanner input = new Scanner(System.in);
 		boolean type = true;
@@ -134,23 +132,19 @@ public class Main {
 				type = false;
 				break;
 			case 1:
-				Main.storeBuy(user);
+				Main.bookList(user);
 				type = false;
 				break;
 			case 2:
-				Main.storeSell(user);
+				Main.lendBook(user);
 				type = false;
 				break;
 			case 3:
-				Main.storeBread(user);//传入登录的商店
+				Main.returnBook(user);
 				type = false;
 				break;
 			case 4:
-				Main.queryFlowerStock(user.getId());
-				type = false;
-				break;
-			case 5:
-				Main.queryStoreBalance(user);
+				Main.historyList(user);
 				type = false;
 				break;
 			default:
@@ -161,141 +155,62 @@ public class Main {
 		}
 	}
 	
-
-	//获得鲜花商店的资金1代表商店顾客，2顾客卖给商店，3代表顾客之间的交易
-	private static FlowerStore getAccount(long id) {
-		FlowerStoreService storeService = new FlowerStoreServiceImpl();
-		FlowerStore store=storeService.getFlowerStore(id);
-		List<Account> list = storeService.account(id);
-		for (int i = 0; i < list.size(); i++) {
-			Account account = list.get(i);
-			String type = null;
-			if (1 == account.getDealType()) {
-				type = "商店卖给顾客";
-			} else if (2 == account.getDealType()) {
-				type = "顾客卖给商店";
-			} else {
-				type = "顾客之间交易";
-			}
-			System.out.println("第" + (i + 1) + "笔交易,交易类型为：" + type + "，交易金额是:"
-					+ account.getPrice());
-		}
-		IsStoreLogOut(store);
-		return store;
-	}
-
-	//查询商店余额
-	private static FlowerStore queryStoreBalance(FlowerStore store) {
-		double balance =store.getBalance();
-		System.out.println(store.getName() + "鲜花商店的结余为:" + balance);
-		IsStoreLogOut(store);
-		return store;
-	}
-
-	//查询待售鲜花
-	private static FlowerStore queryFlowerStock(long storeId) {
-		FlowerStoreService flowerStoreService = new FlowerStoreServiceImpl();
-		FlowerStore store=flowerStoreService.getFlowerStore(storeId);
-		Flower flower = null;
-		List<Flower> flowerList = flowerStoreService.getFlowersInstock(storeId);
-		System.out.println("序号\t" + "鲜花名称\t" + "鲜花类型\t" + "鲜花价格\t" );
-		for (int i = 0; i < flowerList.size(); i++) {
-			flower = flowerList.get(i);
-			System.out.println((i + 1) +"\t"+ flower.getName()+"\t"+ flower.getTypeName()+"\t"+ flower.getPrice()+"\t");
-		}
-		IsStoreLogOut(store);
-		return store;
-	}
-
-	//鲜花商店培育鲜花
-	private static FlowerStore storeBread(FlowerStore store) {
-		FlowerStoreService flowerStore = new FlowerStoreServiceImpl();
+	private static void bookList(User user) {
+		System.out.println("请输入要查询的书籍名");
 		Scanner input = new Scanner(System.in);
-		System.out.println("请输入要培育鲜花的品种(例如:玫瑰))");
-		String flowerType = input.next();
-		flowerStore.bread(flowerType,store);
-		IsStoreLogOut(store);
-		return store;
+		String bname=input.nextLine();
+		UserService us = new UserServiceImpl();
+		List<Book> bookList = us.select(bname);
+		System.out.println("序号\t" + "图书名称\t"+"图书状态\t");
+		for (int i = 0; i < bookList.size(); i++) {
+			Book book = bookList.get(i);
+			System.out.println(book.getId()+"\t"+ book.getName()+"\t"+book.getState()+"\t");
+		   }
+		IsUserLogOut(user);
 	}
-
-	//以商店的身份登录，商店向顾客出售鲜花
-	private static void storeSell(FlowerStore store) {
+	
+	private static void historyList(User user) {
+		UserService us = new UserServiceImpl();
+		List<History> historyList = us.mybook(user.getName());
+		System.out.println("图书ID\t" + "用户名\t"+"图书名称\t"+"借阅时间\t"+"归还截止时间\t"+"归还时间\t");
+		for (int i = 0; i < historyList.size(); i++) {
+			History history = historyList.get(i);
+			System.out.println(history.getBid()+"\t"+ history.getBname()+"\t"+history.getLendtime()+"\t"
+					+history.getDdl()+"\t"+history.getReturntime()+"\t");
+		   }
+		IsUserLogOut(user);
+	}
+	
+	private static void lendBook(User user) {
 		Scanner input = new Scanner(System.in);
-		FlowerStoreService flowerStore = new FlowerStoreServiceImpl();
-		Flower flower = null;
-		List<Flower> flowerList = flowerStore.getFlowersInstock(store.getId());
-		System.out.println("-------以下是鲜花商店正在出售的鲜花-------");
-		System.out.println("序号\t" + "鲜花名称\t" +  "鲜花类型\t"+"鲜花价格\t");
-		for (int i = 0; i < flowerList.size(); i++) {
-			flower = flowerList.get(i);
-			System.out.println((i + 1) +"\t"+ flower.getName() +"\t"+ flower.getTypeName()+"\t"+ flower.getPrice()+"\t");
-		}
-		System.out.println("---------请选择要购买的鲜花序号--------");
+		UserService us = new UserServiceImpl();
 		boolean type = true;
 		while (type) {
-			int num = input.nextInt();
-			if ((num - 1) < flowerList.size() && (num - 1) >= 0) {
-				flower = flowerList.get(num - 1);
-				System.out.println("------要卖出的鲜花信息如下------");
-				System.out.println("鲜花名称为：" + flower.getName() + " 鲜花类别是："+ flower.getTypeName()+"鲜花价格是:"+flower.getPrice());
-				System.out.println("请确认是否卖出，y代表卖出，n代表不卖");
-				String code = input.next();
-				if (null != code) {
-					if ("y".equals(code)) {
-						System.out.println("------下面是现有顾客买家，请选择您要卖给买家序号------");
-						List<FlowerOwner> ownerList = new ArrayList<FlowerOwner>();
-						FlowerOwnerDao ownerDao = new FlowerOwnerDaoImpl();
-						ownerList = ownerDao.getAllOwner();
-						FlowerOwner flowerOwner = null;
-						System.out.println("序号\t" +  "顾客姓名\t");
-						for (int i = 0; i < ownerList.size(); i++) {
-							flowerOwner = ownerList.get(i);
-							System.out.println((i + 1) +"\t"+ flowerOwner.getName()+"\t");
-						}
-						num = input.nextInt();
-						if ((num - 1) < ownerList.size() && (num - 1) >= 0) {
-							flowerOwner = ownerList.get(num - 1);
-						}
-						flower.setOwnerId(flowerOwner.getId());
-						flowerStore.sell(flower);
-					} else if ("n".equals(code)) {
-						System.out
-								.println("--------您选择放弃本次交易，希望您再次光顾----------");
-
-					} else {
-						System.out.println("--------您的输入有误----------");
-					}
-				}
-				type = true;
-			} else {
-				System.out.println("输入有误，请按照序号重新输入");
-				type = false;
+			us.lend(user);
+			System.out.println("是否继续借阅1.是输入'y'  2.否输入'n'");
+			String code = input.next();
+			if(code.equals("n")) {
+				type = false;// 标识符更改为false，退出系统
 			}
-			type = false;// 标识符更改为false，退出系统
 		}
-		IsStoreLogOut(store);
+		IsUserLogOut(user);
 	}
-
-	//以商店的身份登录，商店找顾客购买鲜花
-	private static void storeBuy(FlowerStore store) {
+	
+	private static void returnBook(User user) {
 		Scanner input = new Scanner(System.in);
-		FlowerStoreService flowerStore = new FlowerStoreServiceImpl();
-		Flower flower = null;
-		List<Flower> flowerList = flowerStore.getFlowerSelling();
-		System.out.println("-------以下是顾客正在出售的鲜花-------");
-		System.out.println("序号\t" + "鲜花名称\t" + "鲜花类型\t" + "鲜花价格\t");
-		for (int i = 0; i < flowerList.size(); i++) {
-			flower = flowerList.get(i);
-	        System.out.println((i + 1)+"\t"+ flower.getName()+"\t"+ flower.getTypeName() +"\t"+ flower.getPrice()+"\t" );
+		UserService us = new UserServiceImpl();
+		boolean type = true;
+		while (type) {
+			us.returnbook(user);
+			System.out.println("是否继续归还1.是输入'y'  2.否输入'n'");
+			String code = input.next();
+			if(code.equals("n")) {
+				type = false;// 标识符更改为false，退出系统
+			}
 		}
-		System.out.println("-------请选择要购买哪一种鲜花，并输入选择项的序号-------");
-		int num = input.nextInt();
-		flower= flowerList.get(num - 1);
-		//System.out.println("选中的鲜花信息"+flower.getName()+"id"+flower.getId());
-		flowerStore.buy(flower,store);
-		IsStoreLogOut(store);
+		IsUserLogOut(user);
 	}
-
+	
 	//顾客登录
 	private static Administrator administratorLogin() {
 		Scanner input = new Scanner(System.in);
