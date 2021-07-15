@@ -7,7 +7,7 @@ public class History {
 	String lendtime;
 	String ddl;//应当归还时间
     String returntime;//实际归还时间
-	public String getBid(){
+	public int getBid(){
 		return bid;
 	}
 	public void setBid(int bid){
