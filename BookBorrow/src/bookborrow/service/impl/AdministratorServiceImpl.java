@@ -86,6 +86,15 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 		Scanner input = new Scanner(System.in);
 		System.out.println("请输入添加的用户名：");
 		userName=input.next();
+		UserDao uDao = new UserDaoImpl();
+		List<User> ulist = uDao.getAllUser();
+		for (int i = 0; i < ulist.size(); i++) {
+			User users = ulist.get(i);
+			if(users.getName().equals(userName)) {
+				System.out.println("用户名重复");
+				return false;
+			}
+		}
 		user.setName(userName);
 		System.out.println("请输入添加的用户密码：");
 		password=input.next();
@@ -100,7 +109,6 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 			return true;
 		}
 		else {
-			System.out.println("添加失败！");
 			return false;
 		}
 	}
@@ -221,6 +229,4 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 		book=bookdao.getSomeBook(sql, param);//查询book
 		return book;
 	}
-
-
 }
