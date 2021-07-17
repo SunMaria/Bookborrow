@@ -383,6 +383,9 @@ public class Main {
 		public static void addUser(Administrator administrator){
 			AdministratorService administratorService=new AdministratorServiceImpl();
 			boolean flag=administratorService.add_user();
+			if(!flag) {
+				System.out.println("添加失败！");
+			}
 			IsAdministratorLogOut(administrator);
 		}
 
