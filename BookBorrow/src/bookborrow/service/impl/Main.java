@@ -111,14 +111,15 @@ public class Main {
 	}
 
 	private static void UserChoose(User user) {
-		System.out.println("1：按名称查询书籍");
-		System.out.println("2：按编号查询书籍");
-		System.out.println("3：按类型查询书籍");
-		System.out.println("4：借书");
-		System.out.println("5：还书");
-		System.out.println("6：查询历史借阅记录");
-		System.out.println("7：修改密码");
-		System.out.println("8：充值");
+		System.out.println("1：查询所有书籍");
+		System.out.println("2：按名称查询书籍");
+		System.out.println("3：按编号查询书籍");
+		System.out.println("4：按类型查询书籍");
+		System.out.println("5：借书");
+		System.out.println("6：还书");
+		System.out.println("7：查询历史借阅记录");
+		System.out.println("8：修改密码");
+		System.out.println("9：充值");
 		System.out.println("请根据需要执行的操作，选择序号输入，退出请输入0");
 		Scanner input = new Scanner(System.in);
 		boolean type = true;
@@ -130,34 +131,38 @@ public class Main {
 				type = false;
 				break;
 			case 1:
+					Main.allList(user);
+					type = false;
+					break;
+			case 2:
 				Main.bookList(user);
 				type = false;
 				break;
-			case 2:
+			case 3:
 				Main.idList(user);
 				type = false;
 				break;
-			case 3:
+			case 4:
 				Main.typeList(user);
 				type = false;
 				break;
-			case 4:
+			case 5:
 				Main.lendBook(user);
 				type = false;
 				break;
-			case 5:
+			case 6:
 				Main.returnBook(user);
 				type = false;
 				break;
-			case 6:
+			case 7:
 				Main.historyList(user);
 				type = false;
 				break;
-			case 7:
+			case 8:
 				Main.change(user);
 				type = false;
 				break;
-			case 8:
+			case 9:
 				Main.userrecharge(user);
 				type = false;
 				break;
@@ -179,6 +184,17 @@ public class Main {
 		System.out.println("请输入旧密码");
 		String password=input.nextLine();
 		us.passwordchange(user,password);	
+		IsUserLogOut(user);
+	}
+	private static void allList(User user){
+		BookDao bookDao = new BookDaoImpl();
+		List<Book> bookList = bookDao.getAllBook();
+		System.out.println("序号\t"+ "价格\t"+ "图书名称\t"+"图书类型\t"+"图书状态\t");
+		for (int i = 0; i < bookList.size(); i++) {
+			Book book = bookList.get(i);
+			System.out.println(book.getId()+"\t"+ book.getPrice()+"\t"+book.getName()+"\t"+
+					book.getType()+"\t"+book.getState()+"\t");
+		}
 		IsUserLogOut(user);
 	}
 	private static void idList(User user) {
@@ -383,7 +399,7 @@ public class Main {
 			}
 		}
 		
-		public static void checkBook(Administrator administrator){
+		private static void checkBook(Administrator administrator){
 			AdministratorService as=new AdministratorServiceImpl();
 			boolean flag=as.check();
 			if(!flag) {
@@ -391,8 +407,28 @@ public class Main {
 			}
 			IsAdministratorLogOut(administrator);
 		}
-		
-		public static void listUser(Administrator administrator){
+		private static void listBook(Administrator administrator){
+			BookDao bookDao = new BookDaoImpl();
+			List<Book> bookList = bookDao.getAllBook();
+			System.out.println("序号\t"+ "价格\t"+ "图书名称\t"+"图书类型\t"+"图书状态\t");
+			for (int i = 0; i < bookList.size(); i++) {
+				Book book = bookList.get(i);
+				System.out.println(book.getId()+"\t"+ book.getPrice()+"\t"+book.getName()+"\t"+
+						book.getType()+"\t"+book.getState()+"\t");
+			}
+			IsAdministratorLogOut(administrator);
+		}
+		private static void changeUser(Administrator administrator){
+			AdministratorService administratorService=new AdministratorServiceImpl();
+			boolean flag=administratorService.change_user();
+			IsAdministratorLogOut(administrator);
+		}
+		private static void changeBook(Administrator administrator){
+			AdministratorService administratorService=new AdministratorServiceImpl();
+			boolean flag=administratorService.change_book();
+			IsAdministratorLogOut(administrator);
+		}
+		private static void listUser(Administrator administrator){
 			List<User> userList;
 			AdministratorService administratorService=new AdministratorServiceImpl();
 			userList=administratorService.list_user();
@@ -405,7 +441,7 @@ public class Main {
 			IsAdministratorLogOut(administrator);
 		}
 
-		public static void selectUser(Administrator administrator){
+		private static void selectUser(Administrator administrator){
 			List<User> userList;
 			Scanner input=new Scanner(System.in);
 			AdministratorService administratorService=new AdministratorServiceImpl();
@@ -425,7 +461,7 @@ public class Main {
 			IsAdministratorLogOut(administrator);
 		}
 
-		public static void addBook(Administrator administrator){
+		private static void addBook(Administrator administrator){
 			AdministratorService administratorService=new AdministratorServiceImpl();
 			if (!administratorService.add_book()) {
 				System.out.println("插入失败");
@@ -433,13 +469,13 @@ public class Main {
 			IsAdministratorLogOut(administrator);
 		}
 
-		public static void delBook(Administrator administrator){
+		private static void delBook(Administrator administrator){
 			AdministratorService administratorService=new AdministratorServiceImpl();
 			boolean flag=administratorService.delete_book();
 			IsAdministratorLogOut(administrator);
 		}
 		
-		public static void delHistory(Administrator administrator){
+		private static void delHistory(Administrator administrator){
 			AdministratorService administratorService=new AdministratorServiceImpl();
 			boolean flag=administratorService.delete_history();
 			if(flag) {
@@ -450,13 +486,13 @@ public class Main {
 			IsAdministratorLogOut(administrator);
 		}
 		
-		public static void delUser(Administrator administrator){
+		private static void delUser(Administrator administrator){
 			AdministratorService administratorService=new AdministratorServiceImpl();
 			boolean flag=administratorService.delete_user();
 			IsAdministratorLogOut(administrator);
 		}
 		
-		public static void listHistory(Administrator administrator){
+		private static void listHistory(Administrator administrator){
 			AdministratorService administratorService=new AdministratorServiceImpl();
 			List<History> historyList=administratorService.list_history();
 			System.out.println("图书ID\t" + "用户名\t"+"图书名称\t"+"借阅时间\t"+"归还截止时间\t"+"归还时间\t");
@@ -468,7 +504,7 @@ public class Main {
 			IsAdministratorLogOut(administrator);
 		}
 
-		public static void addUser(Administrator administrator){
+		private static void addUser(Administrator administrator){
 			AdministratorService administratorService=new AdministratorServiceImpl();
 			boolean flag=administratorService.add_user();
 			if(!flag) {

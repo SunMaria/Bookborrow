@@ -120,6 +120,65 @@ public class AdministratorServiceImpl extends BaseDao implements AdministratorSe
 			return false;
 		}
 	}
+
+	@Override
+	public boolean change_user() {
+		Scanner input = new Scanner(System.in);
+		System.out.println("请输入用户名");
+		String username=input.nextLine();
+		System.out.println("请输入要更改的密码");
+		String p=input.nextLine();
+		String sql="update users set password=? where name=?";
+		Object[] param= {p,username};
+		UserDao udao=new UserDaoImpl();
+		int count=udao.updateUser(sql, param);
+		if(count>0) {
+			System.out.println("密码修改成功！");
+			return true;
+		}
+		else {
+			System.out.println("修改错误！");
+			return false;
+		}
+	}
+
+	@Override
+	public boolean change_book() {
+		Scanner input =new Scanner(System.in);
+		System.out.println("请输入要修改的书籍id:");
+		int id=input.nextInt();
+		UserService us = new UserServiceImpl();
+		Book book= us.selectid(id);
+		if(book.getName().equals(null)) {
+			System.out.println("书籍不存在");
+		}else {
+			System.out.println("序号\t"+ "价格\t"+ "书籍名称\t"+"书籍类型\t"+"书籍状态\t");
+			System.out.println(book.getId()+"\t"+ book.getPrice()+"\t"+book.getName()+"\t"+
+					book.getType()+"\t"+book.getState()+"\t");
+		}
+		System.out.println("请输入修改后的书籍名称");
+		String bname=input.next();
+		System.out.println("请输入修改后的书籍类型");
+		String btype=input.next();
+		System.out.println("请输入修改后的书籍价格");
+		int bprice=input.nextInt();
+		String sql="update book set name=? , type=? , price=? where bid=?";
+		Object[] param= {bname,btype,bprice,id};
+		BookDao bookDao=new BookDaoImpl();
+		int count=bookDao.updateBook(sql, param);
+		if(count>0) {
+			System.out.println("修改成功,信息改为：");
+			System.out.println("序号\t"+ "价格\t"+ "书籍名称\t"+"书籍类型\t"+"书籍状态\t");
+			System.out.println(book.getId()+"\t"+ book.getPrice()+"\t"+book.getName()+"\t"+
+					book.getType()+"\t"+book.getState()+"\t");
+			return true;
+		}
+		else {
+			System.out.println("修改错误！");
+			return false;
+		}
+	}
+
 	public List<History> list_history() {
 		List<History> historyList = new ArrayList<History>();
 		HistoryDao historyDao=new HistoryDaoImpl();
