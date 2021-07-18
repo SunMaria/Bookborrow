@@ -11,8 +11,8 @@ public interface AdministratorService extends ListBookable,SelectBookable{
 	public List<User> select_user(String name);
 	public boolean add_book();
 	public boolean add_user();
-	//public boolean change_user();
-	//public boolean change_book();
+	public boolean change_user();
+	public boolean change_book();
 	public List<History> list_history();
 	public boolean delete_book();
 	public boolean delete_user();
